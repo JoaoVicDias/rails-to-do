@@ -2,6 +2,7 @@
 
 class UserController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
+  before_action :require_user_logged_in!, only: %i[ update destroy ]
 
   def index
     @users = User.all
