@@ -10,4 +10,9 @@ class ApplicationController < ActionController::Base
     def require_user_logged_in!
       redirect_to sign_in_path, alert: 'You must be signed in' if Current.user.nil?
     end
+
+    def require_user_logged_out
+      # byebug
+      redirect_to posts_path if Current.user.present?
+    end
 end

@@ -1,9 +1,11 @@
 class SessionsController < ApplicationController
   before_action :require_user_logged_in!, only: %i[destroy]
+  before_action :require_user_logged_out, only: %i[new create]
 
     def new; end
 
     def create
+      byebug
       user = User.find_by(email: params[:email])
 
       if user.present? && user.authenticate(params[:password])

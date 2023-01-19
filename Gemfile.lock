@@ -74,6 +74,7 @@ GEM
     bootsnap (1.15.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    byebug (11.1.3)
     capybara (3.38.0)
       addressable
       matrix
@@ -171,6 +172,7 @@ GEM
     regexp_parser (2.6.1)
     reline (0.3.2)
       io-console (~> 0.5)
+    repost (0.4.1)
     rexml (3.2.5)
     rubocop (1.42.0)
       json (~> 2.3)
@@ -238,12 +240,14 @@ PLATFORMS
 DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
+  byebug (~> 11.1)
   capybara
   debug
   importmap-rails
   jbuilder
   puma (~> 5.0)
   rails (~> 7.0.3, >= 7.0.3.1)
+  repost
   rubocop
   rubocop-rails
   selenium-webdriver

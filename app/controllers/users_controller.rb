@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-class UserController < ApplicationController
+class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :require_user_logged_in!, only: %i[ update destroy ]
+  before_action :require_user_logged_in!, only: %i[ edit destroy update ]
+  before_action :require_user_logged_out, only: %i[new create]
 
   def index
     @users = User.all
@@ -21,7 +22,7 @@ class UserController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to post_url(@user), notice: 'Post was successfully created.' }
+        format.html { redirect_to sign_in_path(@user) }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
