@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :require_user_logged_in!, only: %i[ edit destroy update ]
+  before_action :require_user_logged_in!, only: %i[edit destroy update]
   before_action :require_user_logged_out, only: %i[new create]
 
   def index
@@ -15,7 +15,9 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def edit; end
+  def edit
+    return redirect root_path unless same_user?
+  end
 
   def create
     @user = User.new(user_params)
@@ -34,7 +36,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to post_url(@user), notice: 'Post was successfully updated.' }
+        format.html { redirect_to user_url(@user), notice: 'Your user was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -44,6 +46,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    return redirect root_path unless same_user?
+
     @user.destroy
 
     respond_to do |format|
@@ -62,5 +66,9 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     params.require(:user).permit(:name, :email, :password)
+  end
+
+  def same_user?
+    current_user.id == @user.id
   end
 end

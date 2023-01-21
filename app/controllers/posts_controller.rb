@@ -22,7 +22,7 @@ class PostsController < ApplicationController
 
   # POST /posts or /posts.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(post_params.merge(user_id: current_user.id))
 
     respond_to do |format|
       if @post.save
@@ -37,6 +37,8 @@ class PostsController < ApplicationController
 
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
+    return redirect_to root_path unless current_user_owns_post?
+
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to post_url(@post), notice: 'Post was successfully updated.' }
@@ -50,6 +52,8 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
+    return redirect_to root_path unless current_user_owns_post?
+
     @post.destroy
 
     respond_to do |format|
@@ -68,5 +72,9 @@ class PostsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def post_params
     params.require(:post).permit(:name, :title, :content)
+  end
+
+  def current_user_owns_post?
+    !!current_user.posts.find { |post| post.id == @post.id }
   end
 end
