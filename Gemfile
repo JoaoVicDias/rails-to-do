@@ -75,4 +75,6 @@ group :test do
   gem 'webdrivers'
 end
 
+gem 'rspec-rails', groups: %i[development test]
+gem 'factory_bot_rails', groups: %i[development test]
 gem 'byebug', '~> 11.1', groups: %i[development test]
